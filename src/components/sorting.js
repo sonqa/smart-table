@@ -7,7 +7,7 @@ export function initSorting(columns) {
 
         if (action && action.name === 'sort') {
             const currentValue = action.dataset.value || 'none';
-            const newValue = sortMap[currentValue] || 'asc';
+            const newValue = sortMap[currentValue] || 'up';
             action.dataset.value = newValue;
             
             field = action.dataset.field;
@@ -27,20 +27,19 @@ export function initSorting(columns) {
             });
         }
 
-        // Обновляем стрелки
         columns.forEach(column => {
             const fieldName = column.dataset.field;
             let text = column.textContent.replace(/[↑↓]/g, '').trim();
             
             if (fieldName === field && order && order !== 'none') {
-                const arrow = order === 'asc' ? ' ↑' : ' ↓';
+                const arrow = order === 'up' ? ' ↑' : ' ↓';
                 text += arrow;
             }
             column.textContent = text;
         });
 
         if (field && order && order !== 'none') {
-            const serverField = field === 'total' ? 'total_amount' : field;
+            const serverField = field === 'total' ? 'total' : field;
             return Object.assign({}, query, {
                 sort: `${serverField}:${order}`
             });
